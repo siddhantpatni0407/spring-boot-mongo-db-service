@@ -1,0 +1,83 @@
+spring:
+  application:
+    name: spring-boot-mongo-db-service
+
+  main:
+    banner-mode: console # or 'off' if you want to disable
+
+  banner:
+    location: classpath:banner.txt
+
+  security:
+    user:
+      name: ${SPRING_SECURITY_USER_NAME:admin}
+      password: ${SPRING_SECURITY_USER_PASSWORD:admin}
+      roles: ACTUATOR_ADMIN
+
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/users_db}
+      database: ${SPRING_DATA_MONGODB_DATABASE:users_db}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,beans,loggers,threaddump,heapdump
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+server:
+  port: ${SERVER_PORT:8080}
+#  servlet:
+#    context-path: /api
+
+audit:
+  connector:
+    url: ${AUDIT_URL:http://localhost:8085/audit}
+    username: ${AUDIT_USERNAME:audit}
+    password: ${AUDIT_PASSWORD:audit}
+
+logging:
+  level:
+    root: INFO
+    com.sid: DEBUG
+  file:
+    name: logs/${spring.application.name}.log
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://mongo:27017/users_db}
+  server:
+    port: 8080
+  logging:
+    level:
+      root: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: k8s
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://mongo:27017/users_db}
+  server:
+    port: 8080
+  logging:
+    level:
+      root: INFO

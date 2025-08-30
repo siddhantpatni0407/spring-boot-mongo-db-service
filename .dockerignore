@@ -1,0 +1,9 @@
+build/*
+!build/libs/*.jar
+.gradle
+.git
+.gitignore
+**/.env
+**/.vscode
+**/*.iml
+**/node_modules

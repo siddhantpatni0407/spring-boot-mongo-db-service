@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "da62d7eb-0702-4c43-b12c-eee16872f00f",
+		"name": "spring-boot-mongo-db-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6002209"
+	},
+	"item": [
+		{
+			"name": "MS - LOCAL",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Correlation-ID",
+								"value": "1234567",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumer",
+								"value": "HPM",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumerTimestamp",
+								"value": "2022-02-22T12:30:34",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Siddhant Patni\",\r\n    \"email\": \"siddhant@gmail.com\",\r\n    \"phone\": \"+91-7588811796\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVE\",\r\n    \"address\": \"Pune\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/spring-boot-mongo-db-service/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"spring-boot-mongo-db-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Correlation-ID",
+								"value": "1234567",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumer",
+								"value": "HPM",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumerTimestamp",
+								"value": "2022-02-22T12:30:34",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/68b35b3b28ff9e2a8d520c82",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"spring-boot-mongo-db-service",
+								"users",
+								"68b35b3b28ff9e2a8d520c82"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Users",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Correlation-ID",
+								"value": "1234567",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumer",
+								"value": "HPM",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumerTimestamp",
+								"value": "2022-02-22T12:30:34",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/spring-boot-mongo-db-service/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"spring-boot-mongo-db-service",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "X-Correlation-ID",
+								"value": "1234567",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumer",
+								"value": "HPM",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumerTimestamp",
+								"value": "2022-02-22T12:30:34",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Siddhant Patni\",\r\n    \"email\": \"siddhant@gmail.com\",\r\n    \"phone\": \"+91-7588811796\",\r\n    \"role\": \"ADMIN\",\r\n    \"status\": \"ACTIVE\",\r\n    \"address\": \"Pune, India\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/68b3666145c0f228f251c71f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"spring-boot-mongo-db-service",
+								"users",
+								"68b3666145c0f228f251c71f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-Correlation-ID",
+								"value": "1234567",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumer",
+								"value": "HPM",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "capabilityConsumerTimestamp",
+								"value": "2022-02-22T12:30:34",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/68b35c3389e8684449933d4c",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"spring-boot-mongo-db-service",
+								"users",
+								"68b35c3389e8684449933d4c"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
