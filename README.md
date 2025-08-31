@@ -268,11 +268,19 @@ kubectl get svc
 9. **Stop / Clean up**
 
 ```bash
+# Delete Kubernetes resources
 kubectl delete -f k8s/spring-boot-mongo-db-deployment.yaml
 kubectl delete -f k8s/mongo-deployment.yaml
 kubectl delete -f k8s/mongo-express-deployment.yaml
+
+# Stop and delete Minikube
 minikube stop
 minikube delete
+
+# Delete all images inside Minikube's Docker environment
+eval $(minikube -p minikube docker-env)  # point Docker CLI to Minikube's Docker
+docker images -q | xargs -r docker rmi -f
+
 ```
 
 ---
