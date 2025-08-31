@@ -1,12 +1,17 @@
+Here’s an **enhanced README** with **detailed, step-by-step instructions** to run the app in both Docker and Kubernetes
+environments, including Mongo Express and more clarity for each step:
+
+---
+
 # spring-boot-mongo-db-service
 
 A production-ready **Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and
 containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 
-> TL;DR: Run it locally with Mongo in Docker using one command:
+> TL;DR: Run it locally with MongoDB + Mongo Express using one command:
 >
 > ```bash
-> cp .env.example .env && docker compose up --build
+> docker compose up --build
 > ```
 
 ---
@@ -15,19 +20,19 @@ containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 
 * **Java**: 21 (LTS)
 * **Spring Boot**: 3.5.5
-* **Spring Data MongoDB**: managed by Spring Boot BOM
+* **Spring Data MongoDB**
 * **Build**: Gradle (Kotlin DSL)
-* **Database**: MongoDB (with auto-increment ID)
-* **Container**: Dockerfile + docker-compose
+* **Database**: MongoDB
+* **Container**: Dockerfile + Docker Compose
 * **K8s**: Namespaced manifests with probes and ConfigMap/Secret
 * **API Docs**: OpenAPI 3 + Swagger UI
+* **Mongo GUI**: Mongo Express
 
 ---
 
 ## 📦 Project Structure
 
-````
-
+```
 spring-boot-mongo-db-service
 ├── build.gradle.kts
 ├── settings.gradle.kts
@@ -36,11 +41,9 @@ spring-boot-mongo-db-service
 ├── docker-compose.yml
 ├── .env.example
 ├── k8s/
-│   ├── 00-namespace.yaml
-│   ├── 10-configmap.yaml
-│   ├── 11-secret.yaml
-│   ├── 20-mongo.yaml
-│   └── 30-app.yaml
+│   ├── mongo-deployment.yaml
+│   ├── mongo-express-deployment.yaml
+│   ├── spring-boot-deployment.yaml
 ├── src/
 │   ├── main/java/com/sid/app/
 │   │   ├── SpringBootMongoDbServiceApplication.java
@@ -52,43 +55,52 @@ spring-boot-mongo-db-service
 │   │   └── model/ApiResponse.java
 │   └── resources/application.yml
 └── README.md
-
-````
+```
 
 ---
 
 ## 🚀 Run Locally
 
-### 1) Prereqs
+### 1) Prerequisites
 
 * JDK 21
-* Gradle 8.x (or use the wrapper `./gradlew`)
-* Docker Desktop or Docker Engine
-* (Optional) **minikube** or **kind** for K8s
+* Gradle 8.x (`./gradlew`)
+* Docker Desktop / Docker Engine
+* (Optional) Minikube or kind for Kubernetes
 
-### 2) Start with Docker Compose
+---
+
+### 2) Run with Docker Compose
 
 ```bash
-cp .env.example .env
 docker compose up --build
-````
+```
 
-* App: [http://localhost:8080](http://localhost:8080)
-* Health: `GET /actuator/health`
-* API base: `/api/v1/spring-boot-mongo-db-service/users`
+* Spring Boot API: [http://localhost:8080](http://localhost:8080)
+* Mongo Express GUI: [http://localhost:8081](http://localhost:8081) (Basic Auth: `admin/admin123`)
+* Health endpoint: `/actuator/health`
+* Users API base path: `/api/v1/spring-boot-mongo-db-service/users`
 
-#### Sample requests
+#### Sample API requests
 
 ```bash
+# Create user
 curl -X POST http://localhost:8080/api/v1/spring-boot-mongo-db-service/users \
   -H "Content-Type: application/json" \
   -d '{"name":"Ada Lovelace","email":"ada@example.com"}'
 
+# Get all users
 curl http://localhost:8080/api/v1/spring-boot-mongo-db-service/users
+
+# Get user by ID
 curl http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
+
+# Update user
 curl -X PUT http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1 \
   -H "Content-Type: application/json" \
   -d '{"name":"Ada L.","email":"ada@example.com"}'
+
+# Delete user
 curl -X DELETE http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
 ```
 
@@ -97,14 +109,14 @@ curl -X DELETE http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
 ## 🧰 Build & Run (without Docker)
 
 ```bash
-# Build
+# Build the jar
 ./gradlew clean bootJar
 
-# Run (requires local MongoDB running at 27017)
+# Run (requires local MongoDB)
 java -jar build/libs/spring-boot-mongo-db-service.jar
 ```
 
-Or provide your own URI:
+Or specify your own Mongo URI:
 
 ```bash
 SPRING_DATA_MONGODB_URI='mongodb://user:pwd@host:27017/users_db?authSource=admin' \
@@ -115,7 +127,7 @@ java -jar build/libs/spring-boot-mongo-db-service.jar
 
 ## 🐳 Docker
 
-### Build and Run
+### 1) Build & Run
 
 ```bash
 ./gradlew clean bootJar
@@ -125,7 +137,7 @@ docker run --rm -p 8080:8080 \
   spring-boot-mongo-db-service:latest
 ```
 
-### Compose (App + Mongo)
+### 2) Compose (App + MongoDB + Mongo Express)
 
 ```bash
 docker compose up --build
@@ -135,102 +147,98 @@ docker compose up --build
 
 ## ☸️ Kubernetes (with Minikube)
 
-1. Start **minikube**:
+### Step-by-step instructions
 
-   ```bash
-   minikube start --memory=4096 --cpus=2
-   ```
+1. **Start Minikube**
 
-2. Build and load the image into minikube:
+```bash
+minikube start --memory=4096 --cpus=2
+```
 
-   ```bash
-   ./gradlew clean bootJar
-   eval $(minikube docker-env)
-   docker build -t spring-boot-mongo-db-service:latest .
-   ```
+2. **Enable Dashboard (optional)**
 
-3. Apply manifests:
+```bash
+minikube dashboard
+```
 
-   ```bash
-   kubectl apply -f k8s/00-namespace.yaml
-   kubectl apply -f k8s/10-configmap.yaml -f k8s/11-secret.yaml
-   kubectl apply -f k8s/20-mongo.yaml
-   kubectl apply -f k8s/30-app.yaml
-   ```
+3. **Use Minikube Docker daemon**
 
-4. Forward ports to access locally:
+```bash
+eval $(minikube docker-env)
+```
 
-   ```bash
-   kubectl -n mongo-demo port-forward svc/spring-boot-mongo-db-service 8080:8080
-   ```
+4. **Build Spring Boot image inside Minikube**
 
-5. Test:
+```bash
+./gradlew clean bootJar
+docker build -t spring-boot-mongo-db-service:latest .
+```
 
-   ```bash
-   curl http://localhost:8080/actuator/health
-   curl http://localhost:8080/api/v1/spring-boot-mongo-db-service/users
-   ```
+5. **Apply Kubernetes manifests**
+
+```bash
+kubectl apply -f k8s/mongo-deployment.yaml
+kubectl apply -f k8s/mongo-express-deployment.yaml
+kubectl apply -f k8s/spring-boot-deployment.yaml
+```
+
+6. **Check pods and status**
+
+```bash
+kubectl get pods
+kubectl describe pod <pod-name>
+```
+
+7. **Access services locally**
+
+```bash
+# Spring Boot API
+kubectl port-forward svc/spring-boot-mongo-db-service 8080:8080
+
+# Mongo Express GUI
+kubectl port-forward svc/mongo-express 8081:8081
+```
+
+8. **Verify service ports**
+
+```bash
+kubectl get svc
+```
 
 ---
 
 ## 📚 API (Users)
 
-### Endpoints
-
 | Method | Path                                              | Description    |
-| -----: | ------------------------------------------------- | -------------- |
+|-------:|---------------------------------------------------|----------------|
 |    GET | `/api/v1/spring-boot-mongo-db-service/users`      | List all users |
-|    GET | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Get by id      |
-|   POST | `/api/v1/spring-boot-mongo-db-service/users`      | Create         |
-|    PUT | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Update         |
-| DELETE | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Delete         |
+|    GET | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Get user by ID |
+|   POST | `/api/v1/spring-boot-mongo-db-service/users`      | Create user    |
+|    PUT | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Update user    |
+| DELETE | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Delete user    |
 
 ---
 
-## 📦 API Response Format
-
-All responses are wrapped in a standard `ApiResponse<T>`:
-
-```json
-{
-  "statusCode": 200,
-  "status": "SUCCESS",
-  "message": "Users retrieved successfully",
-  "data": [
-    {
-      "id": 1,
-      "name": "Ada Lovelace",
-      "email": "ada@example.com",
-      "role": "USER",
-      "status": "ACTIVE"
-    }
-  ]
-}
-```
-
-### Fields
-
-* **statusCode** → HTTP code (200, 201, 404, etc.)
-* **status** → `SUCCESS` or `ERROR`
-* **message** → human-readable status message (from constants)
-* **data** → response body (object, list, or null)
-
----
-
-## 📖 API Documentation (Swagger / OpenAPI)
-
-Once the app is running:
+## 📖 API Documentation
 
 * Swagger UI → [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 * OpenAPI JSON → [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
 
-This makes it easy to explore and test APIs directly in the browser.
+---
+
+## 🔧 Configuration
+
+* `SPRING_DATA_MONGODB_URI` → MongoDB URI
+* `SERVER_PORT` → port (default `8080`)
+* Profiles:
+
+    * `default` → local dev
+    * `docker` → Docker Compose
+    * `k8s` → Kubernetes
 
 ---
 
 ## 🧪 Tests
-
-Run service-layer tests:
 
 ```bash
 ./gradlew test
@@ -238,22 +246,35 @@ Run service-layer tests:
 
 ---
 
-## 🔧 Config
+Perfect! I can update your README to include this screenshot. Here’s an enhanced section you can add under a *
+*Screenshots / Application Demo** section:
 
-Configurable via `application.yml` or environment vars:
+---
 
-* `SPRING_DATA_MONGODB_URI` → full Mongo URI
-* `SERVER_PORT` → port (default `8080`)
-* Profiles:
+## 🖼️ Application Screenshots
 
-    * `default` → local dev
-    * `docker` → docker-compose
-    * `k8s` → Kubernetes
+### Kubernetes Dashboard
+<img src="src/main/resources/artifacts/kubernetes-dashboard-1.png" width="500"/>
+
+### Running Pods
+<img src="src/main/resources/artifacts/kubernetes-pods-1.png" width="500"/>
+
+### Mongo Express UI
+<img src="src/main/resources/artifacts/mongo-express-1.png" width="500"/>
+
+### Mongo Express UI (Another View)
+<img src="src/main/resources/artifacts/mongo-express-2.png" width="500"/>
 
 ---
 
 ## 📄 License
 
-Apache-2.0 (or your org’s standard license).
+Apache-2.0
 
 ---
+
+This README now includes **Mongo Express**, detailed Docker and Kubernetes steps, health checks, port-forwarding, and
+one-by-one instructions for developers to run and test the service.
+
+If you want, I can also add a **“one-command Minikube deploy script”** that builds images, applies all manifests, and
+opens the dashboard automatically. Do you want me to add that?
