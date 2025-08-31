@@ -93,7 +93,7 @@ docker compose up --build
 ```
 
 * Spring Boot API: [http://localhost:8080](http://localhost:8080)
-* Mongo Express GUI: [http://localhost:8081](http://localhost:8081) (Basic Auth: `admin/admin123`)
+* Mongo Express GUI: [http://localhost:8081](http://localhost:8081) (Basic Auth: `admin/admin`)
 * Health endpoint: `/actuator/health`
 * Users API base path: `/api/v1/spring-boot-mongo-db-service/users`
 
@@ -103,7 +103,14 @@ docker compose up --build
 # Create user
 curl -X POST http://localhost:8080/api/v1/spring-boot-mongo-db-service/users \
   -H "Content-Type: application/json" \
-  -d '{"name":"Ada Lovelace","email":"ada@example.com"}'
+  -d '{
+    "name": "Siddhant Patni",
+    "email": "siddhant@gmail.com",
+    "phone": "+91-9090909090",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "address": "Pune"
+}'
 
 # Get all users
 curl http://localhost:8080/api/v1/spring-boot-mongo-db-service/users
@@ -114,7 +121,14 @@ curl http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
 # Update user
 curl -X PUT http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1 \
   -H "Content-Type: application/json" \
-  -d '{"name":"Ada L.","email":"ada@example.com"}'
+  -d '{
+    "name": "Siddhant Patni",
+    "email": "siddhant@gmail.com",
+    "phone": "+91-8080808080",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "address": "Pune"
+}'
 
 # Delete user
 curl -X DELETE http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
