@@ -1,13 +1,7 @@
 # spring-boot-mongo-db-service
 
-A production-ready **Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and
+**Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and
 containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
-
-> TL;DR: Run it locally with MongoDB + Mongo Express using one command:
->
-> ```bash
-> docker compose up --build
-> ```
 
 ---
 
@@ -16,13 +10,13 @@ containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 1. [✅ Tech Stack](#-tech-stack)
 2. [📦 Project Structure](#-project-structure)
 3. [🚀 Run Locally](#-run-locally)
-
-- [1) Prerequisites](#1-prerequisites)
-- [2) Run with Docker Compose](#2-run-with-docker-compose)
-
+    - [1) Prerequisites](#1-prerequisites)
+    - [2) Run with Docker Compose](#2-run-with-docker-compose)
+    - [3) Stop / Take Down](#3-stop--take-down)
 4. [🧰 Build & Run (without Docker)](#-build--run-without-docker)
 5. [🐳 Docker](#-docker)
-6. [☸️ Kubernetes (with Minikube)](#️-kubernetes-with-minikube)
+6. [☸️ Kubernetes (with Minikube)](#-kubernetes-with-minikube)
+    - [Stop / Clean up](#stop--clean-up)
 7. [📚 API (Users)](#-api-users)
 8. [📖 API Documentation](#-api-documentation)
 9. [🔧 Configuration](#-configuration)
@@ -48,7 +42,8 @@ containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 
 ## 📦 Project Structure
 
-```
+````
+
 spring-boot-mongo-db-service
 ├── build.gradle.kts
 ├── settings.gradle.kts
@@ -57,21 +52,22 @@ spring-boot-mongo-db-service
 ├── docker-compose.yml
 ├── .env.example
 ├── k8s/
-│   ├── mongo-deployment.yaml
-│   ├── mongo-express-deployment.yaml
-│   ├── spring-boot-deployment.yaml
+│ ├── mongo-deployment.yaml
+│ ├── mongo-express-deployment.yaml
+│ ├── spring-boot-deployment.yaml
 ├── src/
-│   ├── main/java/com/sid/app/
-│   │   ├── SpringBootMongoDbServiceApplication.java
-│   │   ├── constant/AppConstants.java
-│   │   ├── entity/User.java
-│   │   ├── repository/UserRepository.java
-│   │   ├── service/UserService.java
-│   │   ├── controller/UserController.java
-│   │   └── model/ApiResponse.java
-│   └── resources/application.yml
+│ ├── main/java/com/sid/app/
+│ │ ├── SpringBootMongoDbServiceApplication.java
+│ │ ├── constant/AppConstants.java
+│ │ ├── entity/User.java
+│ │ ├── repository/UserRepository.java
+│ │ ├── service/UserService.java
+│ │ ├── controller/UserController.java
+│ │ └── model/ApiResponse.java
+│ └── resources/application.yml
 └── README.md
-```
+
+````
 
 ---
 
@@ -90,7 +86,7 @@ spring-boot-mongo-db-service
 
 ```bash
 docker compose up --build
-```
+````
 
 * Spring Boot API: [http://localhost:8080](http://localhost:8080)
 * Mongo Express GUI: [http://localhost:8081](http://localhost:8081) (Basic Auth: `admin/admin`)
@@ -132,6 +128,38 @@ curl -X PUT http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1 \
 
 # Delete user
 curl -X DELETE http://localhost:8080/api/v1/spring-boot-mongo-db-service/users/1
+```
+
+---
+
+### 3) Stop / Take Down
+
+#### Docker Compose
+
+```bash
+docker compose down        # stops containers
+docker compose down -v     # stops containers and removes volumes
+```
+
+#### Spring Boot Jar
+
+```bash
+pkill -f spring-boot-mongo-db-service
+```
+
+#### Kubernetes / Minikube
+
+```bash
+kubectl delete -f k8s/spring-boot-deployment.yaml
+kubectl delete -f k8s/mongo-deployment.yaml
+kubectl delete -f k8s/mongo-express-deployment.yaml
+
+# OR delete entire namespace if used
+kubectl delete namespace mongo-demo
+
+# Stop Minikube
+minikube stop
+minikube delete
 ```
 
 ---
@@ -235,6 +263,16 @@ kubectl port-forward svc/mongo-express 8081:8081
 kubectl get svc
 ```
 
+9. **Stop / Clean up**
+
+```bash
+kubectl delete -f k8s/spring-boot-deployment.yaml
+kubectl delete -f k8s/mongo-deployment.yaml
+kubectl delete -f k8s/mongo-express-deployment.yaml
+minikube stop
+minikube delete
+```
+
 ---
 
 ## 📚 API (Users)
@@ -268,19 +306,6 @@ kubectl get svc
 
 ---
 
-## 🧪 Tests
-
-```bash
-./gradlew test
-```
-
----
-
-Perfect! I can update your README to include this screenshot. Here’s an enhanced section you can add under a *
-*Screenshots / Application Demo** section:
-
----
-
 ## 🖼️ Application Screenshots
 
 ### Kubernetes Dashboard
@@ -301,14 +326,16 @@ Perfect! I can update your README to include this screenshot. Here’s an enhanc
 
 ---
 
+## 🧪 Tests
+
+```bash
+./gradlew test
+```
+
+---
+
 ## 📄 License
 
 Apache-2.0
 
 ---
-
-This README now includes **Mongo Express**, detailed Docker and Kubernetes steps, health checks, port-forwarding, and
-one-by-one instructions for developers to run and test the service.
-
-If you want, I can also add a **“one-command Minikube deploy script”** that builds images, applies all manifests, and
-opens the dashboard automatically. Do you want me to add that?
