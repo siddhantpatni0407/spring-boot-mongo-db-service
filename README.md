@@ -1,8 +1,3 @@
-Here’s an **enhanced README** with **detailed, step-by-step instructions** to run the app in both Docker and Kubernetes
-environments, including Mongo Express and more clarity for each step:
-
----
-
 # spring-boot-mongo-db-service
 
 A production-ready **Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and
@@ -13,6 +8,27 @@ containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 > ```bash
 > docker compose up --build
 > ```
+
+---
+
+## 📑 Table of Contents
+
+1. [✅ Tech Stack](#-tech-stack)
+2. [📦 Project Structure](#-project-structure)
+3. [🚀 Run Locally](#-run-locally)
+
+- [1) Prerequisites](#1-prerequisites)
+- [2) Run with Docker Compose](#2-run-with-docker-compose)
+
+4. [🧰 Build & Run (without Docker)](#-build--run-without-docker)
+5. [🐳 Docker](#-docker)
+6. [☸️ Kubernetes (with Minikube)](#️-kubernetes-with-minikube)
+7. [📚 API (Users)](#-api-users)
+8. [📖 API Documentation](#-api-documentation)
+9. [🔧 Configuration](#-configuration)
+10. [🖼️ Application Screenshots](#-application-screenshots)
+11. [🧪 Tests](#-tests)
+12. [📄 License](#-license)
 
 ---
 
@@ -254,16 +270,20 @@ Perfect! I can update your README to include this screenshot. Here’s an enhanc
 ## 🖼️ Application Screenshots
 
 ### Kubernetes Dashboard
-<img src="src/main/resources/artifacts/kubernetes-dashboard-1.png" width="500"/>
+
+<img src="src/main/resources/artifacts/kubernetes-dashboard-1.png" width="700"/>
 
 ### Running Pods
-<img src="src/main/resources/artifacts/kubernetes-pods-1.png" width="500"/>
+
+<img src="src/main/resources/artifacts/kubernetes-pods-1.png" width="700"/>
 
 ### Mongo Express UI
-<img src="src/main/resources/artifacts/mongo-express-1.png" width="500"/>
+
+<img src="src/main/resources/artifacts/mongo-express-1.png" width="700"/>
 
 ### Mongo Express UI (Another View)
-<img src="src/main/resources/artifacts/mongo-express-2.png" width="500"/>
+
+<img src="src/main/resources/artifacts/mongo-express-2.png" width="700"/>
 
 ---
 
