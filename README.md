@@ -211,7 +211,7 @@ docker compose up --build
 
 ```bash
 minikube start --memory=4096 --cpus=2
-```
+````
 
 2. **Enable Dashboard (optional)**
 
@@ -237,7 +237,7 @@ docker build -t spring-boot-mongo-db-service:latest .
 ```bash
 kubectl apply -f k8s/mongo-deployment.yaml
 kubectl apply -f k8s/mongo-express-deployment.yaml
-kubectl apply -f k8s/spring-boot-deployment.yaml
+kubectl apply -f k8s/spring-boot-mongo-db-deployment.yaml
 ```
 
 6. **Check pods and status**
@@ -250,11 +250,13 @@ kubectl describe pod <pod-name>
 7. **Access services locally**
 
 ```bash
-# Spring Boot API
+# Option 1: Port-forward (temporary)
 kubectl port-forward svc/spring-boot-mongo-db-service 8080:8080
-
-# Mongo Express GUI
 kubectl port-forward svc/mongo-express 8081:8081
+
+# Option 2: Get Minikube service URL (persistent)
+minikube service spring-boot-mongo-db-service --url
+minikube service mongo-express --url
 ```
 
 8. **Verify service ports**
@@ -266,7 +268,7 @@ kubectl get svc
 9. **Stop / Clean up**
 
 ```bash
-kubectl delete -f k8s/spring-boot-deployment.yaml
+kubectl delete -f k8s/spring-boot-mongo-db-deployment.yaml
 kubectl delete -f k8s/mongo-deployment.yaml
 kubectl delete -f k8s/mongo-express-deployment.yaml
 minikube stop

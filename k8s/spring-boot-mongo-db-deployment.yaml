@@ -5,6 +5,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-boot-mongo-db-service
+  labels:
+    app.kubernetes.io/name: spring-boot-mongo-db-service
+    app.kubernetes.io/instance: spring-boot-mongo-db-instance
 spec:
   replicas: 2
   selector:
@@ -14,11 +17,13 @@ spec:
     metadata:
       labels:
         app: spring-boot-mongo-db-service
+        app.kubernetes.io/name: spring-boot-mongo-db-service
+        app.kubernetes.io/instance: spring-boot-mongo-db-instance
     spec:
       containers:
         - name: spring-boot-mongo-db-service
           image: siddhantpatni0407/spring-boot-mongo-db-service:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
@@ -52,6 +57,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: spring-boot-mongo-db-service
+  labels:
+    app.kubernetes.io/name: spring-boot-mongo-db-service
+    app.kubernetes.io/instance: spring-boot-mongo-db-instance
 spec:
   selector:
     app: spring-boot-mongo-db-service

@@ -5,6 +5,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mongo
+  labels:
+    app.kubernetes.io/name: mongo
+    app.kubernetes.io/instance: mongo-instance
 spec:
   replicas: 1
   selector:
@@ -14,6 +17,8 @@ spec:
     metadata:
       labels:
         app: mongo
+        app.kubernetes.io/name: mongo
+        app.kubernetes.io/instance: mongo-instance
     spec:
       containers:
         - name: mongo
@@ -46,6 +51,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-pvc
+  labels:
+    app.kubernetes.io/name: mongo
+    app.kubernetes.io/instance: mongo-instance
 spec:
   accessModes:
     - ReadWriteOnce
@@ -57,6 +65,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongo
+  labels:
+    app.kubernetes.io/name: mongo
+    app.kubernetes.io/instance: mongo-instance
 spec:
   selector:
     app: mongo
