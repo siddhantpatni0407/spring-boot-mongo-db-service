@@ -27,11 +27,6 @@ containerized, enabling seamless deployment and scaling across multiple environm
 
 ---
 
-**Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and containerized for
-**Docker**, **Docker Compose**, and **Kubernetes**.
-
----
-
 ## 📑 Table of Contents
 
 1. [✅ Tech Stack](#-tech-stack)
