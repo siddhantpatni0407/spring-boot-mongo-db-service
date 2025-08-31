@@ -1,7 +1,34 @@
 # spring-boot-mongo-db-service
 
-**Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and
-containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
+**Project Overview:**
+This project is a **full-featured CRUD application** built with **Java 21** and **Spring Boot 3.5.5**, designed to
+manage user data stored in **MongoDB**. The application follows modern software development best practices and is fully
+containerized, enabling seamless deployment and scaling across multiple environments.
+
+**Key Features:**
+
+- **CRUD Operations:** Create, Read, Update, and Delete user records via RESTful APIs.
+- **Spring Boot & Java 21:** Leveraging the latest features of Java 21 and Spring Boot 3.5.5 for performance,
+  maintainability, and modern development practices.
+- **MongoDB Integration:** Uses MongoDB as the primary data store, with environment-based configuration for
+  flexibility (e.g., dev, prod, Kubernetes).
+- **Containerized Deployment:**
+    - **Docker:** Easily build and run the application as a containerized service.
+    - **Docker Compose:** Supports multi-container setups for local development (Spring Boot + MongoDB + Mongo Express).
+    - **Kubernetes:** Fully Kubernetes-ready with deployments, services, persistent volume claims, and
+      readiness/liveness probes for production-grade orchestration.
+- **Resilience & Observability:** Includes Spring Boot Actuator endpoints for monitoring and health checks, supporting
+  readiness and liveness probes in Kubernetes.
+- **Scalability:** Supports horizontal scaling in Kubernetes with replica sets.
+- **Configuration Management:** Environment variables are used for database credentials and application profiles,
+  enabling flexible deployments across different environments.
+- **Resource Management:** Configured CPU and memory requests/limits for efficient container orchestration.
+- **Persistent Storage:** Uses PersistentVolumeClaims (PVCs) in Kubernetes to ensure MongoDB data durability.
+
+---
+
+**Spring Boot + MongoDB** CRUD service built with **Java 21**, **Spring Boot 3.5.5**, **Gradle**, and containerized for
+**Docker**, **Docker Compose**, and **Kubernetes**.
 
 ---
 
