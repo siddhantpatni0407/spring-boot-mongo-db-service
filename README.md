@@ -20,12 +20,14 @@ containerized for **Docker**, **Docker Compose**, and **Kubernetes**.
 * **Database**: MongoDB (with auto-increment ID)
 * **Container**: Dockerfile + docker-compose
 * **K8s**: Namespaced manifests with probes and ConfigMap/Secret
+* **API Docs**: OpenAPI 3 + Swagger UI
 
 ---
 
 ## 📦 Project Structure
 
-```
+````
+
 spring-boot-mongo-db-service
 ├── build.gradle.kts
 ├── settings.gradle.kts
@@ -50,7 +52,8 @@ spring-boot-mongo-db-service
 │   │   └── model/ApiResponse.java
 │   └── resources/application.yml
 └── README.md
-```
+
+````
 
 ---
 
@@ -68,7 +71,7 @@ spring-boot-mongo-db-service
 ```bash
 cp .env.example .env
 docker compose up --build
-```
+````
 
 * App: [http://localhost:8080](http://localhost:8080)
 * Health: `GET /actuator/health`
@@ -104,7 +107,7 @@ java -jar build/libs/spring-boot-mongo-db-service.jar
 Or provide your own URI:
 
 ```bash
-SPRING_DATA_MONGODB_URI='mongodb://user:pwd@host:27017/appdb?authSource=admin' \
+SPRING_DATA_MONGODB_URI='mongodb://user:pwd@host:27017/users_db?authSource=admin' \
 java -jar build/libs/spring-boot-mongo-db-service.jar
 ```
 
@@ -118,7 +121,7 @@ java -jar build/libs/spring-boot-mongo-db-service.jar
 ./gradlew clean bootJar
 docker build -t spring-boot-mongo-db-service:latest .
 docker run --rm -p 8080:8080 \
-  -e SPRING_DATA_MONGODB_URI='mongodb://localhost:27017/appdb' \
+  -e SPRING_DATA_MONGODB_URI='mongodb://localhost:27017/users_db' \
   spring-boot-mongo-db-service:latest
 ```
 
@@ -175,7 +178,7 @@ docker compose up --build
 ### Endpoints
 
 | Method | Path                                              | Description    |
-|-------:|---------------------------------------------------|----------------|
+| -----: | ------------------------------------------------- | -------------- |
 |    GET | `/api/v1/spring-boot-mongo-db-service/users`      | List all users |
 |    GET | `/api/v1/spring-boot-mongo-db-service/users/{id}` | Get by id      |
 |   POST | `/api/v1/spring-boot-mongo-db-service/users`      | Create         |
@@ -211,6 +214,17 @@ All responses are wrapped in a standard `ApiResponse<T>`:
 * **status** → `SUCCESS` or `ERROR`
 * **message** → human-readable status message (from constants)
 * **data** → response body (object, list, or null)
+
+---
+
+## 📖 API Documentation (Swagger / OpenAPI)
+
+Once the app is running:
+
+* Swagger UI → [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+* OpenAPI JSON → [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
+
+This makes it easy to explore and test APIs directly in the browser.
 
 ---
 
